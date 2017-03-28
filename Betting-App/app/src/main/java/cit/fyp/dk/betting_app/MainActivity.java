@@ -1,10 +1,12 @@
 package cit.fyp.dk.betting_app;
 
+import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +47,31 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new MyBetsFragment(), "My Bets");
         adapter.addFragment(new AccountFragment(), "My Account");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    //create a pop up requesting user to confirm they wish to quit the app
+    public void onBackPressed() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Dialog);
+        dialog.setTitle("Logout");
+        dialog.setMessage("Are you sure you wish to exit the app and log out?");
+
+        dialog.setNegativeButton(("No"),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        dialog.setPositiveButton(("Yes"),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.this.finish();
+                    }
+                });
+
+        dialog.setIcon(R.mipmap.ic_launcher);
+        dialog.show();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
