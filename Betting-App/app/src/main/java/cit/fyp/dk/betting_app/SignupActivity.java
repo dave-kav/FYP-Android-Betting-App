@@ -9,13 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cit.fyp.dk.betting_app.Domain.Customer;
+
 public class SignupActivity extends Activity {
     private static final String TAG = "SignupActivity";
+    private static final String apiUrl = "https://betting-app1.herokuapp.com/api/";
+
+    private Customer customer;
 
     private EditText firstNameText;
     private EditText lastNameText;
     private EditText usernameText;
     private EditText passwordText;
+    private EditText dobText;
     private Button signupButton;
 
     @Override
@@ -27,6 +39,7 @@ public class SignupActivity extends Activity {
         lastNameText = (EditText) findViewById(R.id.input_last_name);
         usernameText = (EditText) findViewById(R.id.input_username);
         passwordText = (EditText) findViewById(R.id.input_password);
+        dobText = (EditText) findViewById(R.id.input_dob);
         signupButton = (Button) findViewById(R.id.btn_signup);
 
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -53,19 +66,46 @@ public class SignupActivity extends Activity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = firstNameText.getText().toString();
-        String email = usernameText.getText().toString();
+        String firstName = firstNameText.getText().toString();
+        String lastName = lastNameText.getText().toString();
+        String dob = lastNameText.getText().toString();
+        String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
-        // TODO: Implement your own signup logic here.
+        //signup
+        Ion.with(getApplicationContext())
+                .load(apiUrl + "signup")
+                .setBodyParameter("firstName", firstName)
+                .setBodyParameter("lastName", lastName)
+                .setBodyParameter("dob", dob)
+                .setBodyParameter("username", username)
+                .setBodyParameter("password", password)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        try {
+                            JSONObject json = new JSONObject(result);
+                            String jsonResult = json.getString("result");
+                            if (jsonResult.equalsIgnoreCase("ok")){
+                                customer = new Customer();
+                            } else {
+                                String error = json.getString("error");
+                                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException j){
+                            Toast.makeText(getApplicationContext(), "Sorry, cannot sign-up right now!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
+                        if (customer != null)
+                            onSignupSuccess();
+                        else
+                            onSignupFailed();
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -79,8 +119,6 @@ public class SignupActivity extends Activity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         signupButton.setEnabled(true);
     }
 
@@ -91,6 +129,7 @@ public class SignupActivity extends Activity {
         String lastName = firstNameText.getText().toString();
         String email = usernameText.getText().toString();
         String password = passwordText.getText().toString();
+        String dob = dobText.getText().toString();
 
         if (firstName.isEmpty() || firstName.length() < 3) {
             firstNameText.setError("at least 3 characters");
@@ -115,6 +154,13 @@ public class SignupActivity extends Activity {
 
         if (password.isEmpty() || password.length() < 8 || password.length() > 100) {
             passwordText.setError("between 8 and 100 characters");
+            valid = false;
+        } else {
+            passwordText.setError(null);
+        }
+
+        if (dob.isEmpty()) {
+            dobText.setError("Please enter a valid date of birth");
             valid = false;
         } else {
             passwordText.setError(null);

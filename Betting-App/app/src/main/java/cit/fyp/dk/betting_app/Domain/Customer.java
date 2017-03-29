@@ -1,6 +1,6 @@
 package cit.fyp.dk.betting_app.Domain;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by davyk on 29/03/2017.
