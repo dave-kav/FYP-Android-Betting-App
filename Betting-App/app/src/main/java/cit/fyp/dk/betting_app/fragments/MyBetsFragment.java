@@ -82,7 +82,8 @@ public class MyBetsFragment extends Fragment {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).getBetID() + "");
-            holder.mContentView.setText(mValues.get(position).getSelection() + "");
+            holder.mSelectionView.setText(mValues.get(position).getSelection() + "");
+            holder.mStakeView.setText("\u20ac" + mValues.get(position).getStake());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,8 +96,6 @@ public class MyBetsFragment extends Fragment {
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.item_detail_container, fragment)
                                 .commit();
-
-                        Log.d("BET FRAG", "if: " + holder.mItem.getBetID());
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
@@ -119,19 +118,21 @@ public class MyBetsFragment extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
-            public final TextView mContentView;
+            public final TextView mSelectionView;
+            public final TextView mStakeView;
             public Bet mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mSelectionView = (TextView) view.findViewById(R.id.selection);
+                mStakeView = (TextView) view.findViewById(R.id.stake);
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + mSelectionView.getText() + "'";
             }
         }
     }
