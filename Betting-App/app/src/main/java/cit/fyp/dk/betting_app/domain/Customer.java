@@ -1,6 +1,4 @@
-package cit.fyp.dk.betting_app.Domain;
-
-import android.util.Log;
+package cit.fyp.dk.betting_app.domain;
 
 import java.io.Serializable;
 import java.sql.Date;

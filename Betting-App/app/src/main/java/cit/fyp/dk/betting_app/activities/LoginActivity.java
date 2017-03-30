@@ -1,4 +1,4 @@
-package cit.fyp.dk.betting_app;
+package cit.fyp.dk.betting_app.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,8 +22,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import cit.fyp.dk.betting_app.Domain.Bet;
-import cit.fyp.dk.betting_app.Domain.Customer;
+import cit.fyp.dk.betting_app.domain.Bet;
+import cit.fyp.dk.betting_app.domain.Customer;
+import cit.fyp.dk.betting_app.R;
 
 public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";

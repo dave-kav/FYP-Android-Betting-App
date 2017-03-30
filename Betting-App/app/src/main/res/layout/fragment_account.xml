@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/activity_horizontal_margin"
     android:padding="@dimen/activity_horizontal_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="cit.fyp.dk.betting_app.MainActivity"
+    tools:context="cit.fyp.dk.betting_app.activities.MainActivity"
     tools:showIn="@layout/fragment_account">
 
     <LinearLayout

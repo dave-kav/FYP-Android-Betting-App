@@ -1,4 +1,4 @@
-package cit.fyp.dk.betting_app.Domain;
+package cit.fyp.dk.betting_app.domain;
 
 import java.io.Serializable;
 

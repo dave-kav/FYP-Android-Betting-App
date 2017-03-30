@@ -19,10 +19,10 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import cit.fyp.dk.betting_app.Domain.Bet;
-import cit.fyp.dk.betting_app.Domain.Customer;
-import cit.fyp.dk.betting_app.Domain.Status;
-import cit.fyp.dk.betting_app.MainActivity;
+import cit.fyp.dk.betting_app.domain.Bet;
+import cit.fyp.dk.betting_app.domain.Customer;
+import cit.fyp.dk.betting_app.domain.Status;
+import cit.fyp.dk.betting_app.activities.MainActivity;
 import cit.fyp.dk.betting_app.R;
 
 /**

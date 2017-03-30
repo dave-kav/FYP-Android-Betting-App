@@ -1,4 +1,4 @@
-package cit.fyp.dk.betting_app.Domain;
+package cit.fyp.dk.betting_app.domain;
 
 /**
  * Created by davyk on 30/03/2017.

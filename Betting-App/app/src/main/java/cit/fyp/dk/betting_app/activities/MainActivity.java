@@ -1,4 +1,4 @@
-package cit.fyp.dk.betting_app;
+package cit.fyp.dk.betting_app.activities;
 
 import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
@@ -14,7 +14,8 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import cit.fyp.dk.betting_app.Domain.Customer;
+import cit.fyp.dk.betting_app.domain.Customer;
+import cit.fyp.dk.betting_app.R;
 import cit.fyp.dk.betting_app.fragments.AccountFragment;
 import cit.fyp.dk.betting_app.fragments.MyBetsFragment;
 import cit.fyp.dk.betting_app.fragments.RaceFragment;
