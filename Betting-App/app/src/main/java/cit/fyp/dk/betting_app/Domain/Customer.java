@@ -1,12 +1,19 @@
 package cit.fyp.dk.betting_app.Domain;
 
+import android.util.Log;
+
+import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by davyk on 29/03/2017.
  */
 
-public class Customer {
+public class Customer implements Serializable {
+
+    private static final String TAG = "CUSTOMER";
 
     private String username;
     private String password;
@@ -14,6 +21,7 @@ public class Customer {
     private String lastName;
     private Date DOB;
     private double credit;
+    private List<Bet> bets;
 
     public String getUsername() {
         return username;
@@ -63,11 +71,28 @@ public class Customer {
         this.credit = credit;
     }
 
+    public List<Bet> getBets() {
+        return bets;
+    }
+
+    public void setBets(List<Bet> bets) {
+        this.bets = bets;
+    }
+
+    public List<Bet> getBetsByStatus(Status status) {
+        List<Bet> newBetList = new ArrayList<>();
+        for (int i = 0; i < bets.size(); i++) {
+            Bet b = bets.get(i);
+
+            if (b.getStatus() == status)
+                newBetList.add(b);
+        }
+        return newBetList;
+    }
+
     @Override
     public String toString() {
         return "Customer [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
                 + lastName + ", DOB=" + DOB + ", credit=" + credit + "]";
     }
-
-
 }

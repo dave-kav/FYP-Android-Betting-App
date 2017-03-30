@@ -13,12 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
+import cit.fyp.dk.betting_app.Domain.Bet;
 import cit.fyp.dk.betting_app.Domain.Customer;
 
 public class LoginActivity extends Activity {
@@ -96,8 +100,13 @@ public class LoginActivity extends Activity {
                                 String customerJson = json.getJSONObject("customer").toString();
                                 Gson gson = new Gson();
                                 customer = gson.fromJson(customerJson, Customer.class);
+
+                                String betsJson = json.getJSONArray("bets").toString();
+                                List<Bet> bets = gson.fromJson(betsJson, new TypeToken<List<Bet>>(){}.getType());
+                                customer.setBets(bets);
+                                for (Bet b: customer.getBets())
+                                    Log.d(TAG, b.toString());
                             } else {
-                                // Result is NOT "OK"
                                 String error = json.getString("error");
                                 Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
                             }
@@ -109,15 +118,15 @@ public class LoginActivity extends Activity {
 
 
         new android.os.Handler().postDelayed(new Runnable() {
-                public void run() {
-                    // On complete call either onLoginSuccess or onLoginFailed
-                    if (customer != null)
-                        onLoginSuccess();
-                    else
-                        loginButton.setEnabled(true);
-                    progressDialog.dismiss();
-                }
-            }, 3000
+                                                 public void run() {
+                                                     // On complete call either onLoginSuccess or onLoginFailed
+                                                     if (customer != null)
+                                                         onLoginSuccess();
+                                                     else
+                                                         loginButton.setEnabled(true);
+                                                     progressDialog.dismiss();
+                                                 }
+                                             }, 3000
         );
     }
 
@@ -134,6 +143,9 @@ public class LoginActivity extends Activity {
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
         Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("customer", customer);
+        mainActivity.putExtras(b);
         startActivity(mainActivity);
         finish();
     }

@@ -14,11 +14,14 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import cit.fyp.dk.betting_app.Domain.Customer;
 import cit.fyp.dk.betting_app.fragments.AccountFragment;
 import cit.fyp.dk.betting_app.fragments.MyBetsFragment;
 import cit.fyp.dk.betting_app.fragments.RaceFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Customer customer;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        customer = (Customer)   this.getIntent().getExtras().getSerializable("customer");
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -101,5 +106,13 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return fragmentTitleList.get(position);
         }
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }
