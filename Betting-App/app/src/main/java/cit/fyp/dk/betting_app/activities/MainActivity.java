@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        customer = (Customer)   this.getIntent().getExtras().getSerializable("customer");
+        customer = (Customer) this.getIntent().getExtras().getSerializable("customer");
     }
 
     private void setupViewPager(ViewPager viewPager) {

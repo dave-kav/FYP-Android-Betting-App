@@ -27,6 +27,7 @@ import cit.fyp.dk.betting_app.domain.Customer;
 public class MyBetsFragment extends Fragment {
 
     private Customer customer;
+    private boolean mTwoPane;
 
     public MyBetsFragment() {
 
@@ -45,6 +46,14 @@ public class MyBetsFragment extends Fragment {
         View recyclerView = view.findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+
+        if (view.findViewById(R.id.item_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-w900dp).
+            // If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+        }
 
         return view;
     }
@@ -78,12 +87,26 @@ public class MyBetsFragment extends Fragment {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Context context = v.getContext();
-                    Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getBetID());
+                    if (mTwoPane) {
+                        Bundle arguments = new Bundle();
+                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getBetID() + "");
+                        ItemDetailFragment fragment = new ItemDetailFragment();
+                        fragment.setArguments(arguments);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.item_detail_container, fragment)
+                                .commit();
 
-                    context.startActivity(intent);
-                    Log.d("bet frag", "insert intent");
+                        Log.d("BET FRAG", "if: " + holder.mItem.getBetID());
+                    } else {
+                        Context context = v.getContext();
+                        Intent intent = new Intent(context, ItemDetailActivity.class);
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getBetID());
+                        Bundle b = new Bundle();
+                        b.putSerializable("customer", customer);
+                        intent.putExtras(b);
+
+                        context.startActivity(intent);
+                    }
                 }
             });
         }

@@ -105,8 +105,6 @@ public class LoginActivity extends Activity {
                                 String betsJson = json.getJSONArray("bets").toString();
                                 List<Bet> bets = gson.fromJson(betsJson, new TypeToken<List<Bet>>(){}.getType());
                                 customer.setBets(bets);
-                                for (Bet b: customer.getBets())
-                                    Log.d(TAG, b.toString());
                             } else {
                                 String error = json.getString("error");
                                 Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();

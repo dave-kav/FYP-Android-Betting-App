@@ -3,7 +3,6 @@ package cit.fyp.dk.betting_app.fragments;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,8 +102,6 @@ public class AccountFragment extends Fragment {
                                 String betsJson = json.getJSONArray("bets").toString();
                                 List<Bet> bets = gson.fromJson(betsJson, new TypeToken<List<Bet>>(){}.getType());
                                 customer.setBets(bets);
-                                for (Bet b: customer.getBets())
-                                    Log.d("ACCOUNT FRAG", b.toString());
                             } else {
                                 String error = json.getString("error");
                             }
