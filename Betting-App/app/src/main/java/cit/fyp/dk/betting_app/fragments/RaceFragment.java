@@ -3,6 +3,7 @@ package cit.fyp.dk.betting_app.fragments;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +52,10 @@ public class RaceFragment extends Fragment{
         meetingArray =  new ArrayList<>();
         meetingArray.add("Select race meeting...");
 
-        racesArray =  new ArrayList<>();
+        racesArray = new ArrayList<>();
         racesArray.add("Select race time...");
 
-        horsesArray =  new ArrayList<>();
+        horsesArray = new ArrayList<>();
         horsesArray.add("Select horse...");
     }
 
@@ -77,18 +78,19 @@ public class RaceFragment extends Fragment{
         meetingItems = (Spinner) view.findViewById(R.id.meeting_spinner);
         meetingItems.setAdapter(adapter);
 
+        //first spinner
         meetingItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (meetingItems.getSelectedItemPosition() == 0) {
                     Snackbar.make(view, "Select a race meeting from the dropdown", Snackbar.LENGTH_INDEFINITE).show();
 
-
-
                     // hide views
                     racesSection.setVisibility(View.INVISIBLE);
                     horsesSection.setVisibility(View.INVISIBLE);
                 } else {
+                    raceItems.setSelection(0);
+                    
                     // load races for selected meeting into spinner and display the spinner
                     getRacesByMeeting(meetingItems.getSelectedItem().toString());
 
@@ -98,7 +100,6 @@ public class RaceFragment extends Fragment{
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -107,15 +108,22 @@ public class RaceFragment extends Fragment{
         raceItems = (Spinner) view.findViewById(R.id.races_spinner);
         raceItems.setAdapter(adapter);
 
+        //second spinner
         raceItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (raceItems.getSelectedItemPosition() == 0) {
                     Snackbar.make(view, "Select a race from the dropdown", Snackbar.LENGTH_INDEFINITE).show();
                     horsesSection.setVisibility(View.INVISIBLE);
+
                 } else {
+                    horseItems.setSelection(0);
+
                     // load races for selected meeting into spinner and display the spinner
                     getHorsesByRace(raceItems.getSelectedItem().toString());
+
+                    for (String s: horsesArray)
+                        Log.d("RACE FRAG", s);
 
                     horsesSection.setVisibility(View.VISIBLE);
                 }
@@ -123,7 +131,6 @@ public class RaceFragment extends Fragment{
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -133,6 +140,16 @@ public class RaceFragment extends Fragment{
         horseItems.setAdapter(adapter);
 
         return view;
+    }
+
+    private void resetRaceArray() {
+        racesArray.clear();
+        racesArray.add("Select race time...");
+    }
+
+    private void resetHorseArray() {
+        horsesArray.clear();
+        horsesArray.add("Select horse...");
     }
 
     private void getRaceMeetings() {
@@ -148,6 +165,8 @@ public class RaceFragment extends Fragment{
     }
 
     private void getRacesByMeeting(String meeting) {
+        resetRaceArray();
+
         for (Race r: races) {
             if (r.getTrack().equals(meeting)) {
                 racesArray.add(r.getTime());
@@ -156,8 +175,12 @@ public class RaceFragment extends Fragment{
     }
 
     private void getHorsesByRace(String time) {
+        resetHorseArray();
+
         Race race = null;
+
         for (Race r: races) {
+            Log.d("RACE FRAG", r.toString());
             if (r.getTime().equals(time)) {
                 race = r;
                 break;
