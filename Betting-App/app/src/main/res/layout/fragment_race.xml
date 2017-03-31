@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fitsSystemWindows="false"
     tools:context="cit.fyp.dk.betting_app.activities.MainActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="cit.fyp.dk.betting_app.activities.MainActivity"
@@ -53,6 +53,7 @@
             <include layout="@layout/item_divider" />
 
             <RelativeLayout
+                android:id="@+id/races_section"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackground"
@@ -86,6 +87,7 @@
             <include layout="@layout/item_divider" />
 
             <RelativeLayout
+                android:id="@+id/horses_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -115,6 +117,8 @@
                     android:paddingTop="20dp" />
 
             </RelativeLayout>
+
+            <include layout="@layout/item_divider" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

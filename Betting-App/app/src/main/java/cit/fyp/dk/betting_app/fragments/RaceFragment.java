@@ -2,6 +2,7 @@ package cit.fyp.dk.betting_app.fragments;
 
 import android.os.Bundle;
 import android.support.constraint.solver.ArrayLinkedVariables;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +30,14 @@ public class RaceFragment extends Fragment{
 
     private Customer customer;
     private ArrayList<Race> races;
+    private List<String> meetingArray;
+    private List<String> timesArray ;
+    private List<String> horsesArray;
+
     private Spinner meetingItems;
     private Spinner timeItems;
     private Spinner horseItems;
+    private RelativeLayout racesSection;
 
     public RaceFragment() {
 
@@ -40,29 +48,30 @@ public class RaceFragment extends Fragment{
         super.onCreate(savedInstanceState);
         customer = ((MainActivity) this.getActivity()).getCustomer();
         races = ((MainActivity) this.getActivity()).getRaces();
+
+        meetingArray =  new ArrayList<>();
+        meetingArray.add("Select race meeting...");
+
+        timesArray =  new ArrayList<>();
+        timesArray.add("Select race time...");
+
+        horsesArray =  new ArrayList<>();
+        horsesArray.add("Select horse...");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_race, container, false);
 
-        // spinner for meetings
-        List<String> meetingArray =  new ArrayList<>();
-        meetingArray.add("Select race meeting...");
+        // hide sections to be shown upon selection from previous spinner
+        racesSection = (RelativeLayout)view.findViewById(R.id.races_section);
+        racesSection.setVisibility(View.INVISIBLE);
 
-        for (Race r: races) {
-            boolean exists = false;
-            if (meetingArray.isEmpty())
-                meetingArray.add(r.getTrack());
-            else {
-                for (String s: meetingArray) {
-                    if (r.getTrack().equals(s))
-                        exists = true;
-                }
-            }
-            if (!exists)
-                meetingArray.add(r.getTrack());
-        }
+        RelativeLayout horsesSection = (RelativeLayout)view.findViewById(R.id.horses_section);
+        horsesSection .setVisibility(View.INVISIBLE);
+
+
+        getRaceMeetings();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, meetingArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -72,7 +81,15 @@ public class RaceFragment extends Fragment{
         meetingItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (meetingItems.getSelectedItemPosition() == 0) {
+                    Snackbar.make(view, "Select a race meeting from the dropdown", Snackbar.LENGTH_INDEFINITE).show();
+                    racesSection.setVisibility(View.INVISIBLE);
+                } else {
+                    // add meeting races to spinner
 
+
+                    racesSection.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -81,22 +98,13 @@ public class RaceFragment extends Fragment{
             }
         });
 
-        List<String> timesArray =  new ArrayList<>();
-        timesArray.add("Select race time...");
-        timesArray.add("14:10");
-        timesArray.add("14:40");
-        timesArray.add("15:10");
+
+
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, timesArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeItems = (Spinner) view.findViewById(R.id.races_spinner);
         timeItems.setAdapter(adapter);
-
-        List<String> horsesArray =  new ArrayList<>();
-        horsesArray.add("Select race time...");
-        horsesArray.add("Shergar");
-        horsesArray.add("Denman");
-        horsesArray.add("Sprinter Sacre");
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, horsesArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -107,5 +115,21 @@ public class RaceFragment extends Fragment{
 
 
         return view;
+    }
+
+    private void getRaceMeetings() {
+        for (Race r: races) {
+            boolean exists = false;
+            for (String s: meetingArray) {
+                if (r.getTrack().equals(s))
+                    exists = true;
+            }
+            if (!exists)
+                meetingArray.add(r.getTrack());
+        }
+    }
+
+    private void getRacesByMeeting(String meeting) {
+        
     }
 }
