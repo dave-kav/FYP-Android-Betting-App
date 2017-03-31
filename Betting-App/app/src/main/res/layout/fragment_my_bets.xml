@@ -7,11 +7,65 @@
     android:fitsSystemWindows="false"
     tools:context="cit.fyp.dk.betting_app.fragments.MyBetsFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Bet Number"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#212121" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingLeft="90dp"
+                    android:text="Stake"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#212121" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="40dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/item_divider" />
 
         <include layout="@layout/item_list" />
     </FrameLayout>

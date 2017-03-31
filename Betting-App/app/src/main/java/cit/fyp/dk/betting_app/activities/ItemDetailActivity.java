@@ -52,6 +52,21 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         TextView stakeTv = (TextView) findViewById(R.id.bet_stake);
         stakeTv.setText(String.format("\u20ac%.2f", bet.getStake()));
+
+        TextView horseNumberTv = (TextView) findViewById(R.id.horse_number);
+        horseNumberTv.setText(String.format("%d", bet.getHorse().getNumber()));
+
+        TextView horseNameTv = (TextView) findViewById(R.id.horse_name);
+        horseNameTv.setText(bet.getHorse().getName());
+
+        TextView raceTimeTv = (TextView) findViewById(R.id.race_time);
+        raceTimeTv.setText(bet.getRace().getTime());
+
+        TextView raceTrackTv = (TextView) findViewById(R.id.race_track);
+        raceTrackTv.setText(bet.getRace().getTrack());
+
+        TextView winningsTv = (TextView) findViewById(R.id.winnings);
+        winningsTv.setText(String.format("\u20ac%.2f", bet.getWinnings()));
     }
 
     @Override

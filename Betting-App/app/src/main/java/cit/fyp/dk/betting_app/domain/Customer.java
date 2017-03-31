@@ -20,7 +20,6 @@ public class Customer implements Serializable {
     private Date DOB;
     private double credit;
     private List<Bet> bets;
-
     public String getUsername() {
         return username;
     }

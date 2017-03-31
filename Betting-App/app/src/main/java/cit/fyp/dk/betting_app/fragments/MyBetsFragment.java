@@ -85,7 +85,6 @@ public class MyBetsFragment extends Fragment {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).getBetID() + "");
-            holder.mSelectionView.setText(mValues.get(position).getHorse().getName());
             holder.mStakeView.setText("\u20ac" + mValues.get(position).getStake());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +120,6 @@ public class MyBetsFragment extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
-            public final TextView mSelectionView;
             public final TextView mStakeView;
             public Bet mItem;
 
@@ -129,13 +127,12 @@ public class MyBetsFragment extends Fragment {
                 super(view);
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
-                mSelectionView = (TextView) view.findViewById(R.id.selection);
                 mStakeView = (TextView) view.findViewById(R.id.stake);
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mSelectionView.getText() + "'";
+                return super.toString() + " '" + mStakeView.getText() + "'";
             }
         }
     }

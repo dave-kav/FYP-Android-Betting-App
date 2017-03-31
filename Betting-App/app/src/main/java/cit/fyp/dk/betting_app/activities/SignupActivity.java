@@ -69,7 +69,7 @@ public class SignupActivity extends Activity {
 
         String firstName = firstNameText.getText().toString();
         String lastName = lastNameText.getText().toString();
-        String dob = lastNameText.getText().toString();
+        String dob = dobText.getText().toString();
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 

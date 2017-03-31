@@ -6,15 +6,17 @@
     tools:context="cit.fyp.dk.betting_app.fragments.MyBetsFragment">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
         android:gravity="center_vertical|center_horizontal|center"
         android:text="Bets you have placed will display here!"
+        android:textAlignment="center"
         android:textAllCaps="true"
         android:textAppearance="@android:style/TextAppearance.Material.Display2"
-        android:textStyle="bold" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="144dp" />
 
 </RelativeLayout>

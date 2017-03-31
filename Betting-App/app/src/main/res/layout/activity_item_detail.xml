@@ -115,13 +115,182 @@
                             android:text="Bet Number"
                             android:textAppearance="@style/TextAppearance.AppCompat.Small"
                             android:textColor="#727272" />
-
                     </RelativeLayout>
                 </LinearLayout>
-
             </RelativeLayout>
 
             <include layout="@layout/item_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/horse_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="#212121" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/horse_number"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="8dp"
+                            android:text="Number"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/horse_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:textColor="#212121" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/horse_name"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin"
+                            android:layout_marginTop="8dp"
+                            android:text="Name"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                            android:textColor="#727272" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <include layout="@layout/item_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/race_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#212121" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/race_time"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="8dp"
+                    android:text="Time"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/race_track"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#212121" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/race_track"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="8dp"
+                    android:text="Track"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+            </RelativeLayout>
+
+            <include layout="@layout/item_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/winnings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#212121" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/winnings"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="8dp"
+                    android:text="Winnings"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="#727272" />
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

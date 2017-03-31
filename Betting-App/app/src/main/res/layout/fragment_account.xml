@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
-        android:padding="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="cit.fyp.dk.betting_app.activities.MainActivity"
         tools:showIn="@layout/fragment_account">
@@ -28,7 +27,9 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:padding="@dimen/activity_horizontal_margin">
+                android:paddingBottom="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <TextView
                     android:id="@+id/user_name"

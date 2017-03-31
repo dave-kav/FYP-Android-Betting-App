@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -96,23 +97,24 @@ public class AccountFragment extends Fragment {
         Ion.with(this.getActivity())
                 .load(apiUrl + "bets/" + customer.getUsername())
                 .setBodyParameter("username", customer.getUsername())
+                .setBodyParameter("password", customer.getPassword())
                 .asString()
                 .setCallback(new FutureCallback<String>() {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         try {
-                            JSONObject json = new JSONObject(result);
-                            String jsonResult = json.getString("result");
+                            JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
+                            String jsonResult = json.getString("result"); // Get the string "result" inside the Json-object
                             if (jsonResult.equalsIgnoreCase("ok")){
+                                String customerJson = json.getJSONObject("customer").toString();
                                 Gson gson = new Gson();
-
-                                String betsJson = json.getJSONArray("bets").toString();
-                                List<Bet> bets = gson.fromJson(betsJson, new TypeToken<List<Bet>>(){}.getType());
-                                customer.setBets(bets);
+                                customer = gson.fromJson(customerJson, Customer.class);
                             } else {
                                 String error = json.getString("error");
+                                Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException j){
+                            Toast.makeText(getContext(), "Sorry, cannot login right now!", Toast.LENGTH_LONG).show();
                             j.printStackTrace();
                         }
                     }
