@@ -10,12 +10,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cit.fyp.dk.betting_app.domain.Customer;
 import cit.fyp.dk.betting_app.R;
+import cit.fyp.dk.betting_app.domain.Race;
 import cit.fyp.dk.betting_app.fragments.AccountFragment;
 import cit.fyp.dk.betting_app.fragments.MyBetsFragment;
 import cit.fyp.dk.betting_app.fragments.RaceFragment;
@@ -23,6 +25,7 @@ import cit.fyp.dk.betting_app.fragments.RaceFragment;
 public class MainActivity extends AppCompatActivity {
 
     private Customer customer;
+    private ArrayList<Race> races;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         customer = (Customer) this.getIntent().getExtras().getSerializable("customer");
+        races = (ArrayList<Race>) this.getIntent().getExtras().getSerializable("races");
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -116,4 +120,9 @@ public class MainActivity extends AppCompatActivity {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    public ArrayList<Race> getRaces() { return races; }
+
+    public void setRaces(ArrayList<Race> races) { this.races = races; }
+
 }

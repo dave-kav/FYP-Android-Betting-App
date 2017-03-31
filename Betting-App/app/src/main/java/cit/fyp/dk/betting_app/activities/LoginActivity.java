@@ -20,11 +20,13 @@ import com.koushikdutta.ion.Ion;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cit.fyp.dk.betting_app.domain.Bet;
 import cit.fyp.dk.betting_app.domain.Customer;
 import cit.fyp.dk.betting_app.R;
+import cit.fyp.dk.betting_app.domain.Race;
 
 import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
@@ -33,6 +35,7 @@ public class LoginActivity extends Activity {
     private static final int REQUEST_SIGNUP = 0;
     private static final String apiUrl = "https://betting-app1.herokuapp.com/api/";
     private Customer customer;
+    private ArrayList<Race> races;
 
     private EditText usernameText;
     private EditText passwordText;
@@ -43,6 +46,8 @@ public class LoginActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        races = new ArrayList<>();
 
         usernameText = (EditText) findViewById(R.id.input_username);
         passwordText = (EditText) findViewById(R.id.input_password);
@@ -119,7 +124,7 @@ public class LoginActivity extends Activity {
                                                  public void run() {
                                                      // On complete call either onLoginSuccess or onLoginFailed
                                                      if (customer != null)
-                                                         onLoginSuccess();
+                                                         loadData();
                                                      else
                                                          loginButton.setEnabled(true);
                                                      progressDialog.dismiss();
@@ -143,6 +148,8 @@ public class LoginActivity extends Activity {
         Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
         Bundle b = new Bundle();
         b.putSerializable("customer", customer);
+        b.putSerializable("races", races);
+
         mainActivity.putExtras(b);
         startActivity(mainActivity);
         finish();
@@ -169,5 +176,57 @@ public class LoginActivity extends Activity {
         }
 
         return valid;
+    }
+
+    public void loadData() {
+
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                R.style.Theme_AppCompat_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading race data...");
+        progressDialog.show();
+
+        Ion.with(getApplicationContext())
+                .load(apiUrl + "raceInfo")
+                .asString()
+                .setCallback(new FutureCallback<String>() {
+                    @Override
+                    public void onCompleted(Exception e, String result) {
+                        try {
+                            JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
+                            String jsonResult = json.getString("result"); // Get the string "result" inside the Json-object
+                            if (jsonResult.equalsIgnoreCase("ok")){
+                                String racesJson = json.getJSONArray("races").toString();
+                                Gson gson = new Gson();
+
+                                races = gson.fromJson(racesJson, new TypeToken<List<Race>>(){}.getType());
+                                setRaces(races);
+
+                            } else {
+                                String error = json.getString("error");
+                                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException j){
+                            Toast.makeText(getApplicationContext(), "Sorry, cannot login right now!", Toast.LENGTH_LONG).show();
+                            j.printStackTrace();
+                        }
+                    }
+                });
+
+        new android.os.Handler().postDelayed(new Runnable() {
+                                                 public void run() {
+                                                     onLoginSuccess();
+                                                     progressDialog.dismiss();
+                                                 }
+                                             }, 3000
+        );
+    }
+
+    public ArrayList<Race> getRaces() {
+        return races;
+    }
+
+    public void setRaces(ArrayList<Race> races) {
+        this.races = races;
     }
 }

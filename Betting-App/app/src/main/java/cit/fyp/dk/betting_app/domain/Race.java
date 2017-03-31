@@ -15,9 +15,7 @@ public class Race implements Serializable {
     private int places;
     private double terms;
     private int runners;
-    private Horse winner;
     private int winnerID;
-    private List<Horse> placedHorses;
     private List<Integer> placedHorseIDs;
     private List<Horse> allHorses;
 
@@ -67,22 +65,6 @@ public class Race implements Serializable {
 
     public void setRunners(int runners) {
         this.runners = runners;
-    }
-
-    public Horse getWinner() {
-        return winner;
-    }
-
-    public void setWinner(Horse winner) {
-        this.winner = winner;
-    }
-
-    public List<Horse> getPlacedHorses() {
-        return placedHorses;
-    }
-
-    public void setPlacedHorses(List<Horse> placedHorses) {
-        this.placedHorses = placedHorses;
     }
 
     public int getWinnerID() {
