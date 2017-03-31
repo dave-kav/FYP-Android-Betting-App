@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cit.fyp.dk.betting_app.fragments.MyBetsFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical|center_horizontal|center"
+        android:text="Bets you have placed will display here!"
+        android:textAllCaps="true"
+        android:textAppearance="@android:style/TextAppearance.Material.Display2"
+        android:textStyle="bold" />
+
+</RelativeLayout>

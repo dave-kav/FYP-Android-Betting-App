@@ -32,6 +32,8 @@ public class Bet implements Serializable {
     private boolean paid;
     //for online bets
     private String customerID;
+    private Horse horse;
+    private Race race;
 
     public int getBetID() {
         return betID;
@@ -144,6 +146,14 @@ public class Bet implements Serializable {
     public void setCustomerID(String customerID) {
         this.customerID = customerID;
     }
+
+    public Horse getHorse() { return horse; }
+
+    public void setHorse(Horse horse) { this.horse = horse; }
+
+    public Race getRace() { return race; }
+
+    public void setRace(Race race) { this.race = race; }
 
     @Override
     public String toString() {

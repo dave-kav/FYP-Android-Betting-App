@@ -41,21 +41,24 @@ public class MyBetsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_bets, container, false);
+        if (customer.getBets().size() > 0) {
+            View view = inflater.inflate(R.layout.fragment_my_bets, container, false);
 
-        View recyclerView = view.findViewById(R.id.item_list);
-        assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
+            View recyclerView = view.findViewById(R.id.item_list);
+            assert recyclerView != null;
+            setupRecyclerView((RecyclerView) recyclerView);
 
-        if (view.findViewById(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
+            if (view.findViewById(R.id.item_detail_container) != null) {
+                // The detail container view will be present only in the
+                // large-screen layouts (res/values-w900dp).
+                // If this view is present, then the
+                // activity should be in two-pane mode.
+                mTwoPane = true;
+            }
+
+            return view;
         }
-
-        return view;
+        else return inflater.inflate(R.layout.fragment_my_bets_empty, container, false);
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -82,7 +85,7 @@ public class MyBetsFragment extends Fragment {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
             holder.mIdView.setText(mValues.get(position).getBetID() + "");
-            holder.mSelectionView.setText(mValues.get(position).getSelection() + "");
+            holder.mSelectionView.setText(mValues.get(position).getHorse().getName());
             holder.mStakeView.setText("\u20ac" + mValues.get(position).getStake());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {

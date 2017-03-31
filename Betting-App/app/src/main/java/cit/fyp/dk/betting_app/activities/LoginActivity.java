@@ -26,6 +26,8 @@ import cit.fyp.dk.betting_app.domain.Bet;
 import cit.fyp.dk.betting_app.domain.Customer;
 import cit.fyp.dk.betting_app.R;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 public class LoginActivity extends Activity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
@@ -101,16 +103,13 @@ public class LoginActivity extends Activity {
                                 String customerJson = json.getJSONObject("customer").toString();
                                 Gson gson = new Gson();
                                 customer = gson.fromJson(customerJson, Customer.class);
-
-                                String betsJson = json.getJSONArray("bets").toString();
-                                List<Bet> bets = gson.fromJson(betsJson, new TypeToken<List<Bet>>(){}.getType());
-                                customer.setBets(bets);
                             } else {
                                 String error = json.getString("error");
                                 Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException j){
                             Toast.makeText(getApplicationContext(), "Sorry, cannot login right now!", Toast.LENGTH_LONG).show();
+                            j.printStackTrace();
                         }
                     }
                 });

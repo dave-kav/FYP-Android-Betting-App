@@ -2,6 +2,7 @@ package cit.fyp.dk.betting_app.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,8 +48,6 @@ public class AccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-//        refreshBets();
-
         TextView usernameTV = (TextView) view.findViewById(R.id.user_name);
         usernameTV.setText(customer.getUsername());
 
@@ -76,6 +75,14 @@ public class AccountFragment extends Fragment {
         TextView losersTV = (TextView) view.findViewById(R.id.losers);
         losersTV.setText(customer.getBetsByStatus(Status.LOSER).size() + "");
 
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshBets();
+            }
+        });
+
         return view;
     }
 
@@ -83,7 +90,7 @@ public class AccountFragment extends Fragment {
         final ProgressDialog progressDialog = new ProgressDialog((this.getActivity()),
                 R.style.Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Reloading bets...");
+        progressDialog.setMessage("Reloading account info...");
         progressDialog.show();
 
         Ion.with(this.getActivity())
@@ -94,8 +101,8 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, String result) {
                         try {
-                            JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
-                            String jsonResult = json.getString("result"); // Get the string "result" inside the Json-object
+                            JSONObject json = new JSONObject(result);
+                            String jsonResult = json.getString("result");
                             if (jsonResult.equalsIgnoreCase("ok")){
                                 Gson gson = new Gson();
 

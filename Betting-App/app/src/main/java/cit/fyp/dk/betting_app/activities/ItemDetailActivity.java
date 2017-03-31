@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import cit.fyp.dk.betting_app.R;
 import cit.fyp.dk.betting_app.domain.Bet;
@@ -44,6 +46,12 @@ public class ItemDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(bet.getStatus() + "");
         }
+
+        TextView betIdTv = (TextView) findViewById(R.id.bet_id);
+        betIdTv.setText(String.format("%d", betID));
+
+        TextView stakeTv = (TextView) findViewById(R.id.bet_stake);
+        stakeTv.setText(String.format("\u20ac%.2f", bet.getStake()));
     }
 
     @Override
