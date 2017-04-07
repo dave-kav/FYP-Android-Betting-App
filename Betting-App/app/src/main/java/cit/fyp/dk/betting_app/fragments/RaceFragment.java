@@ -50,6 +50,7 @@ public class RaceFragment extends Fragment{
     private static final String apiUrl = "https://betting-app1.herokuapp.com/api/";
 
     private Customer customer;
+    private Bet bet;
     private ArrayList<Race> races;
     private List<String> meetingArray;
     private List<String> racesArray;
@@ -235,19 +236,18 @@ public class RaceFragment extends Fragment{
                     stakeEt.setError("You do not have enough credit to place this bet!");
                 else {
                     //do request to place bet
-                    Bet bet = new Bet();
-                    bet.setCustomerID(customer.getUsername());
-                    bet.setEachWay(checkBox.isChecked());
-
-                    final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                    final ProgressDialog progressDialog = new ProgressDialog(getContext(),
                             R.style.Theme_AppCompat_Dialog);
                     progressDialog.setIndeterminate(true);
-                    progressDialog.setMessage("Authenticating...");
+                    progressDialog.setMessage("Placing Bet...");
                     progressDialog.show();
 
                     // send bet object
                     Ion.with(getContext())
-                            .load(apiUrl + "login")
+                            .load(apiUrl + "bet/new")
+                            .setBodyParameter("username", customer.getUsername())
+                            .setBodyParameter("stake", stake + "")
+                            .setBodyParameter("eachway", checkBox.isChecked() ? "true" : "false")
                             .asString()
                             .setCallback(new FutureCallback<String>() {
                                 @Override
@@ -256,15 +256,15 @@ public class RaceFragment extends Fragment{
                                         JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
                                         String jsonResult = json.getString("result"); // Get the string "result" inside the Json-object
                                         if (jsonResult.equalsIgnoreCase("ok")){
-                                            String customerJson = json.getJSONObject("customer").toString();
+//                                            String customerJson = json.getJSONObject("customer").toString();
                                             Gson gson = new Gson();
-                                            customer = gson.fromJson(customerJson, Customer.class);
+//                                            customer = gson.fromJson(customerJson, Customer.class);
                                         } else {
-                                            String error = json.getString("error");
-                                            Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
+//                                            String error = json.getString("error");
+                                            Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
                                         }
                                     } catch (JSONException j){
-                                        Toast.makeText(getContext(), "Sorry, cannot login right now!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext(), "Sorry, cannot place bet right now!", Toast.LENGTH_LONG).show();
                                         j.printStackTrace();
                                     }
                                 }
@@ -274,10 +274,10 @@ public class RaceFragment extends Fragment{
                     new android.os.Handler().postDelayed(new Runnable() {
                                                              public void run() {
                                                                  // On complete call either onLoginSuccess or onLoginFailed
-                                                                 if (customer != null)
-                                                                     loadData();
+                                                                 if (bet != null)
+                                                                     System.out.println(true);
                                                                  else
-                                                                     loginButton.setEnabled(true);
+                                                                     System.out.println(false);
                                                                  progressDialog.dismiss();
                                                              }
                                                          }, 3000
