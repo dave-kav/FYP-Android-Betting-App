@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="false"
     tools:context="cit.fyp.dk.betting_app.activities.MainActivity">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="cit.fyp.dk.betting_app.activities.MainActivity"
@@ -25,7 +26,6 @@
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:paddingBottom="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/meeting_tv"
                     android:padding="0dp"
-                    android:paddingTop="20dp" />
+                    android:paddingTop="10dp" />
             </RelativeLayout>
 
             <include layout="@layout/item_divider" />
@@ -58,7 +58,6 @@
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:paddingBottom="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -80,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/races_tv"
                     android:padding="0dp"
-                    android:paddingTop="20dp" />
+                    android:paddingTop="10dp" />
 
             </RelativeLayout>
 
@@ -92,7 +91,6 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:paddingBottom="@dimen/activity_horizontal_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -114,12 +112,113 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/horses_tv"
                     android:padding="0dp"
-                    android:paddingTop="20dp" />
+                    android:paddingTop="10dp" />
 
             </RelativeLayout>
 
             <include layout="@layout/item_divider" />
 
+            <RelativeLayout
+                android:id="@+id/bet_section"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingBottom="@dimen/activity_horizontal_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <RelativeLayout
+                    android:id="@+id/bet_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true">
+
+
+                    <TextView
+                        android:id="@+id/new_bet_stake_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_horizontal_margin"
+                        android:text="Stake" />
+
+                    <EditText
+                        android:id="@+id/new_bet_stake"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/new_bet_stake_tv"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/ew_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/bet_top"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true">
+
+
+                    <TextView
+                        android:id="@+id/bet_account_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/activity_horizontal_margin"
+                        android:text="TextView" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:elevation="0dp"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingTop="0dp"
+                        android:text="Each Way?" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bottom_rel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/ew_section"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true">
+
+                    <TextView
+                        android:id="@+id/total_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="Total Cost: \u20ac" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_place_bet"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/bottom_rel"
+                    android:layout_marginBottom="24dp"
+                    android:padding="0dp"
+                    android:paddingBottom="0dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="0dp"
+                    android:text="Place Bet" />
+
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

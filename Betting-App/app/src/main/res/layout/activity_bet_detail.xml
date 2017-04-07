@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="cit.fyp.dk.betting_app.activities.ItemDetailActivity"
+    tools:context="cit.fyp.dk.betting_app.activities.BetDetailActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout
@@ -164,6 +164,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/horse_detail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1">

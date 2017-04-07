@@ -15,6 +15,7 @@ import com.koushikdutta.ion.Ion;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cit.fyp.dk.betting_app.domain.Bet;
 import cit.fyp.dk.betting_app.domain.Customer;
 import cit.fyp.dk.betting_app.R;
 
@@ -23,6 +24,7 @@ public class SignupActivity extends Activity {
     private static final String apiUrl = "https://betting-app1.herokuapp.com/api/";
 
     private Customer customer;
+    private Bet bet;
 
     private EditText firstNameText;
     private EditText lastNameText;
@@ -75,11 +77,8 @@ public class SignupActivity extends Activity {
 
         //signup
         Ion.with(getApplicationContext())
-                .load(apiUrl + "signup")
-                .setBodyParameter("firstName", firstName)
-                .setBodyParameter("lastName", lastName)
-                .setBodyParameter("dob", dob)
-                .setBodyParameter("username", username)
+                .load(apiUrl + "/bet/new")
+
                 .setBodyParameter("password", password)
                 .asString()
                 .setCallback(new FutureCallback<String>() {
@@ -89,7 +88,7 @@ public class SignupActivity extends Activity {
                             JSONObject json = new JSONObject(result);
                             String jsonResult = json.getString("result");
                             if (jsonResult.equalsIgnoreCase("ok")){
-                                customer = new Customer();
+                                bet = new Bet();
                             } else {
                                 String error = json.getString("error");
                                 Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();

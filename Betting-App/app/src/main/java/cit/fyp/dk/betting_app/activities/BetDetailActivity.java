@@ -1,5 +1,6 @@
 package cit.fyp.dk.betting_app.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -7,7 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.TextView;
 
 import cit.fyp.dk.betting_app.R;
@@ -20,7 +21,7 @@ import cit.fyp.dk.betting_app.fragments.MyBetsFragment;
  * Created by davyk on 30/03/2017.
  */
 
-public class ItemDetailActivity extends AppCompatActivity {
+public class BetDetailActivity extends AppCompatActivity {
 
     private Bet bet;
     private Customer customer;
@@ -28,7 +29,7 @@ public class ItemDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_detail);
+        setContentView(R.layout.activity_bet_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
@@ -58,6 +59,16 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         TextView horseNameTv = (TextView) findViewById(R.id.horse_name);
         horseNameTv.setText(bet.getHorse().getName());
+        horseNameTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent intent = new Intent(context, HorseDetailActivity.class);
+                intent.putExtra("horse", bet.getHorse().getName());
+
+                context.startActivity(intent);
+            }
+        });
 
         TextView raceTimeTv = (TextView) findViewById(R.id.race_time);
         raceTimeTv.setText(bet.getRace().getTime());
@@ -67,6 +78,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         TextView winningsTv = (TextView) findViewById(R.id.winnings);
         winningsTv.setText(String.format("\u20ac%.2f", bet.getWinnings()));
+
     }
 
     @Override

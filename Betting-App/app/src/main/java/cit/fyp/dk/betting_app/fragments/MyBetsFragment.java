@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cit.fyp.dk.betting_app.R;
-import cit.fyp.dk.betting_app.activities.ItemDetailActivity;
+import cit.fyp.dk.betting_app.activities.BetDetailActivity;
 import cit.fyp.dk.betting_app.activities.MainActivity;
 import cit.fyp.dk.betting_app.domain.Bet;
 import cit.fyp.dk.betting_app.domain.Customer;
@@ -100,7 +99,7 @@ public class MyBetsFragment extends Fragment {
                                 .commit();
                     } else {
                         Context context = v.getContext();
-                        Intent intent = new Intent(context, ItemDetailActivity.class);
+                        Intent intent = new Intent(context, BetDetailActivity.class);
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getBetID());
                         Bundle b = new Bundle();
                         b.putSerializable("customer", customer);

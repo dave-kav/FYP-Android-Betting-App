@@ -17,7 +17,8 @@
         </activity>
         <activity android:name=".activities.SignupActivity" android:theme="@style/MyMaterialTheme" />
         <activity android:name=".activities.MainActivity"/>
-        <activity android:name=".activities.ItemDetailActivity"/>
+        <activity android:name=".activities.BetDetailActivity"/>
+        <activity android:name=".activities.HorseDetailActivity"/>
     </application>
 
 </manifest>

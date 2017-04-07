@@ -1,22 +1,42 @@
 package cit.fyp.dk.betting_app.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.NestedScrollingParentHelper;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.AppCompatButton;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cit.fyp.dk.betting_app.R;
+import cit.fyp.dk.betting_app.activities.LoginActivity;
 import cit.fyp.dk.betting_app.activities.MainActivity;
+import cit.fyp.dk.betting_app.domain.Bet;
 import cit.fyp.dk.betting_app.domain.Customer;
 import cit.fyp.dk.betting_app.domain.Horse;
 import cit.fyp.dk.betting_app.domain.Race;
@@ -27,17 +47,24 @@ import cit.fyp.dk.betting_app.domain.Race;
 
 public class RaceFragment extends Fragment{
 
+    private static final String apiUrl = "https://betting-app1.herokuapp.com/api/";
+
     private Customer customer;
     private ArrayList<Race> races;
     private List<String> meetingArray;
     private List<String> racesArray;
     private List<String> horsesArray;
+    private double stake;
 
     private Spinner meetingItems;
     private Spinner raceItems;
     private Spinner horseItems;
-    private RelativeLayout racesSection;
-    private RelativeLayout horsesSection;
+    private RelativeLayout betSection;
+    private TextView balanceTv;
+    private TextView costTv;
+    private EditText stakeEt;
+    private CheckBox checkBox;
+    private AppCompatButton button;
 
     public RaceFragment() {
 
@@ -57,18 +84,30 @@ public class RaceFragment extends Fragment{
 
         horsesArray = new ArrayList<>();
         horsesArray.add("Select horse...");
+
+        stake = 0;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_race, container, false);
+
+        final View view = inflater.inflate(R.layout.fragment_race, container, false);
 
         // hide sections to be shown upon selection from previous spinner
-        racesSection = (RelativeLayout)view.findViewById(R.id.races_section);
-        racesSection.setVisibility(View.INVISIBLE);
+        raceItems = (Spinner) view.findViewById(R.id.races_spinner);
+        raceItems .setVisibility(View.INVISIBLE);
 
-        horsesSection = (RelativeLayout)view.findViewById(R.id.horses_section);
-        horsesSection .setVisibility(View.INVISIBLE);
+        horseItems = (Spinner) view.findViewById(R.id.horses_spinner);
+        horseItems.setVisibility(View.INVISIBLE);
+
+        betSection = (RelativeLayout) view.findViewById(R.id.bet_section);
+        betSection.setVisibility(View.INVISIBLE);
+        balanceTv = (TextView) view.findViewById(R.id.bet_account_balance);
+        costTv = (TextView) view.findViewById(R.id.total_cost);
+        stakeEt = (EditText) view.findViewById(R.id.new_bet_stake);
+        checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+        button = (AppCompatButton) view.findViewById(R.id.btn_place_bet);
+        button.setVisibility(View.INVISIBLE);
 
         // load all race meetings into spinner
         getRaceMeetings();
@@ -83,18 +122,18 @@ public class RaceFragment extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (meetingItems.getSelectedItemPosition() == 0) {
-                    Snackbar.make(view, "Select a race meeting from the dropdown", Snackbar.LENGTH_INDEFINITE).show();
-
                     // hide views
-                    racesSection.setVisibility(View.INVISIBLE);
-                    horsesSection.setVisibility(View.INVISIBLE);
+                    raceItems .setVisibility(View.INVISIBLE);
+                    horseItems.setVisibility(View.INVISIBLE);
+                    betSection.setVisibility(View.INVISIBLE);
+                    button.setVisibility(View.INVISIBLE);
                 } else {
                     raceItems.setSelection(0);
-                    
+
                     // load races for selected meeting into spinner and display the spinner
                     getRacesByMeeting(meetingItems.getSelectedItem().toString());
 
-                    racesSection.setVisibility(View.VISIBLE);
+                    raceItems.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -105,7 +144,6 @@ public class RaceFragment extends Fragment{
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, racesArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        raceItems = (Spinner) view.findViewById(R.id.races_spinner);
         raceItems.setAdapter(adapter);
 
         //second spinner
@@ -113,19 +151,15 @@ public class RaceFragment extends Fragment{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (raceItems.getSelectedItemPosition() == 0) {
-                    Snackbar.make(view, "Select a race from the dropdown", Snackbar.LENGTH_INDEFINITE).show();
-                    horsesSection.setVisibility(View.INVISIBLE);
-
+                    horseItems.setVisibility(View.INVISIBLE);
+                    betSection.setVisibility(View.INVISIBLE);
+                    button.setVisibility(View.INVISIBLE);
                 } else {
                     horseItems.setSelection(0);
 
                     // load races for selected meeting into spinner and display the spinner
                     getHorsesByRace(raceItems.getSelectedItem().toString());
-
-                    for (String s: horsesArray)
-                        Log.d("RACE FRAG", s);
-
-                    horsesSection.setVisibility(View.VISIBLE);
+                    horseItems.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -136,8 +170,123 @@ public class RaceFragment extends Fragment{
 
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, horsesArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        horseItems = (Spinner) view.findViewById(R.id.horses_spinner);
         horseItems.setAdapter(adapter);
+
+        //third spinner
+        horseItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (horseItems.getSelectedItemPosition() == 0) {
+                    betSection.setVisibility(View.INVISIBLE);
+                    button.setVisibility(View.INVISIBLE);
+                } else {
+                    balanceTv.setText(String.format("Available Balance: \u20ac%.2f", customer.getCredit()));
+                    betSection.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        stakeEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                getView().getParent().requestChildFocus(stakeEt, stakeEt);
+                if (!charSequence.toString().equals("")) {
+                    stake = Double.parseDouble(charSequence.toString());
+                    costTv.setText(String.format("Total Cost: \u20ac%.2f", stake));
+                    button.setVisibility(View.VISIBLE);
+                } else {
+                    costTv.setText("Total Cost: \u20ac0.00");
+                    button.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (stake != 0) {
+                    if (checkBox.isChecked())
+                        stake = stake * 2;
+                    else {
+                        stake = stake / 2;
+                        stakeEt.setText(String.format("%.2f",stake));
+                    }
+                    costTv.setText(String.format("Total Cost: \u20ac%.2f", stake));
+                }
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (stake > customer.getCredit())
+                    stakeEt.setError("You do not have enough credit to place this bet!");
+                else {
+                    //do request to place bet
+                    Bet bet = new Bet();
+                    bet.setCustomerID(customer.getUsername());
+                    bet.setEachWay(checkBox.isChecked());
+
+                    final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+                            R.style.Theme_AppCompat_Dialog);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setMessage("Authenticating...");
+                    progressDialog.show();
+
+                    // send bet object
+                    Ion.with(getContext())
+                            .load(apiUrl + "login")
+                            .asString()
+                            .setCallback(new FutureCallback<String>() {
+                                @Override
+                                public void onCompleted(Exception e, String result) {
+                                    try {
+                                        JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
+                                        String jsonResult = json.getString("result"); // Get the string "result" inside the Json-object
+                                        if (jsonResult.equalsIgnoreCase("ok")){
+                                            String customerJson = json.getJSONObject("customer").toString();
+                                            Gson gson = new Gson();
+                                            customer = gson.fromJson(customerJson, Customer.class);
+                                        } else {
+                                            String error = json.getString("error");
+                                            Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
+                                        }
+                                    } catch (JSONException j){
+                                        Toast.makeText(getContext(), "Sorry, cannot login right now!", Toast.LENGTH_LONG).show();
+                                        j.printStackTrace();
+                                    }
+                                }
+                            });
+
+
+                    new android.os.Handler().postDelayed(new Runnable() {
+                                                             public void run() {
+                                                                 // On complete call either onLoginSuccess or onLoginFailed
+                                                                 if (customer != null)
+                                                                     loadData();
+                                                                 else
+                                                                     loginButton.setEnabled(true);
+                                                                 progressDialog.dismiss();
+                                                             }
+                                                         }, 3000
+                    );
+
+                    //redirect to bet details activity
+                }
+            }
+        });
 
         return view;
     }
@@ -180,7 +329,6 @@ public class RaceFragment extends Fragment{
         Race race = null;
 
         for (Race r: races) {
-            Log.d("RACE FRAG", r.toString());
             if (r.getTime().equals(time)) {
                 race = r;
                 break;
