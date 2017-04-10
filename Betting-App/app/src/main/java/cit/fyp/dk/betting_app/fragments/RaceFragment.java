@@ -247,6 +247,7 @@ public class RaceFragment extends Fragment{
                             R.style.Theme_AppCompat_Dialog);
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Placing Bet...");
+                    progressDialog.setCancelable(false);
                     progressDialog.show();
 
                     // send bet object
@@ -283,6 +284,24 @@ public class RaceFragment extends Fragment{
                                                              public void run() {
                                                                  if (bet != null) {
                                                                      Toast.makeText(getContext(), "Bet Successfully Placed!", Toast.LENGTH_SHORT).show();
+
+                                                                     Map wrapper = getHorseInRace(bet.getSelection());
+                                                                     bet.setRace((Race)wrapper.get("race"));
+                                                                     bet.setHorse((Horse)wrapper.get("horse"));
+
+                                                                     Context context = getContext();
+                                                                     Intent intent = new Intent(context, BetDetailActivity.class);
+                                                                     intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, bet.getBetID());
+                                                                     Bundle b = new Bundle();
+                                                                     Log.d("RACEFRAG", customer.getBets().size() + "");
+                                                                     customer.getBets().add(bet);
+                                                                     customer.setCredit(customer.getCredit() - stake);
+                                                                     ((MainActivity)getActivity()).setCustomer(customer);
+
+                                                                     Log.d("RACEFRAG", customer.getBets().size() + "");
+                                                                     b.putSerializable("customer", customer);
+                                                                     intent.putExtras(b);
+
                                                                      meetingItems.setSelection(0);
                                                                      horseItems.setSelection(0);
                                                                      meetingItems.setSelection(0);
@@ -296,21 +315,7 @@ public class RaceFragment extends Fragment{
                                                                      button.setVisibility(View.INVISIBLE);
                                                                      progressDialog.dismiss();
 
-                                                                     Map wrapper = getHorseInRace(bet.getSelection());
-                                                                     bet.setRace((Race)wrapper.get("race"));
-                                                                     bet.setHorse((Horse)wrapper.get("horse"));
-
-                                                                     Context context = getContext();
-                                                                     Intent intent = new Intent(context, BetDetailActivity.class);
-                                                                     intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, bet.getBetID());
-                                                                     Bundle b = new Bundle();
-                                                                     Log.d("RACEFRAG", customer.getBets().size() + "");
-                                                                     customer.getBets().add(bet);
-                                                                     Log.d("RACEFRAG", customer.getBets().size() + "");
-                                                                     b.putSerializable("customer", customer);
-                                                                     intent.putExtras(b);
-
-                                                                     context.startActivity(intent);
+                                                                     startActivityForResult(intent, 1);
                                                                  }
                                                                  else
                                                                      System.out.println(false);
@@ -322,6 +327,13 @@ public class RaceFragment extends Fragment{
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("RACEFRAG", "onActivityResult()");
+        super.onActivityResult(requestCode, resultCode, data);
+        ((MainActivity)getActivity()).updateFragments();
     }
 
     private void resetRaceArray() {

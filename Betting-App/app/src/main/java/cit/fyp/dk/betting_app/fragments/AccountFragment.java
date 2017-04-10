@@ -93,6 +93,7 @@ public class AccountFragment extends Fragment {
                 R.style.Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Reloading account info...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         for (Fragment f: getFragmentManager().getFragments()){
@@ -116,6 +117,7 @@ public class AccountFragment extends Fragment {
                                 Gson gson = new Gson();
                                 customer = gson.fromJson(customerJson, Customer.class);
                                 ((MainActivity)getActivity()).setCustomer(customer);
+                                ((MainActivity)getActivity()).updateFragments();
                             } else {
                                 String error = json.getString("error");
                                 Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();

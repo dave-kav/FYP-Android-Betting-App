@@ -86,6 +86,7 @@ public class LoginActivity extends Activity {
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
@@ -184,6 +185,7 @@ public class LoginActivity extends Activity {
                 R.style.Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading race data...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         Ion.with(getApplicationContext())

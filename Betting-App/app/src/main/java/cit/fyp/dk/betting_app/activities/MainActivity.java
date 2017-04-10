@@ -51,25 +51,6 @@ public class MainActivity extends AppCompatActivity {
         races = (ArrayList<Race>) this.getIntent().getExtras().getSerializable("races");
     }
 
-    @Override
-    public void recreate() {
-        setContentView(R.layout.activity_main);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
-        customer = (Customer) this.getIntent().getExtras().getSerializable("customer");
-        races = (ArrayList<Race>) this.getIntent().getExtras().getSerializable("races");
-    }
-
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new RaceFragment(), "Racing");
@@ -142,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<Race> getRaces() { return races; }
 
-    public void setRaces(ArrayList<Race> races) { this.races = races; }
+    public void updateFragments() {
+        Log.d("MAIN", "updateFragments()");
+        setupViewPager(viewPager);
+    }
 
 }

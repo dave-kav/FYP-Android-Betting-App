@@ -65,6 +65,7 @@ public class SignupActivity extends Activity {
                 R.style.Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         String firstName = firstNameText.getText().toString();
