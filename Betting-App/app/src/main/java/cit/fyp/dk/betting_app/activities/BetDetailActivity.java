@@ -49,13 +49,17 @@ public class BetDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             if (bet.getStatus() != null)
                 actionBar.setTitle(bet.getStatus() + "");
+                actionBar.setSubtitle(String.format("%d", bet.getBetID()));
         }
 
         TextView betIdTv = (TextView) findViewById(R.id.bet_id);
         betIdTv.setText(String.format("%d", betID));
 
         TextView stakeTv = (TextView) findViewById(R.id.bet_stake);
-        stakeTv.setText(String.format("\u20ac%.2f", bet.getStake()));
+        if (bet.isEachWay())
+            stakeTv.setText(String.format("\u20ac%.2f each way", bet.getStake()/2));
+        else
+            stakeTv.setText(String.format("\u20ac%.2f", bet.getStake()));
 
         TextView horseNumberTv = (TextView) findViewById(R.id.horse_number);
         horseNumberTv.setText(String.format("%d", bet.getHorse().getNumber()));
