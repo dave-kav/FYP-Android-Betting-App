@@ -45,7 +45,8 @@ public class BetDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(bet.getStatus() + "");
+            if (bet.getStatus() != null)
+                actionBar.setTitle(bet.getStatus() + "");
         }
 
         TextView betIdTv = (TextView) findViewById(R.id.bet_id);

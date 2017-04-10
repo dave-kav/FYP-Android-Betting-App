@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class MyBetsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (customer.getBets().size() > 0) {
+            Log.d("MYBETS", customer.getBets().size() + "");
             View view = inflater.inflate(R.layout.fragment_my_bets, container, false);
 
             View recyclerView = view.findViewById(R.id.item_list);
@@ -64,8 +66,7 @@ public class MyBetsFragment extends Fragment {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(customer.getBets()));
     }
 
-    public class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public class SimpleItemRecyclerViewAdapter extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final List<Bet> mValues;
 

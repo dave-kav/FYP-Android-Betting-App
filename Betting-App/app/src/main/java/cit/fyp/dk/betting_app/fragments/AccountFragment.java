@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,8 +95,13 @@ public class AccountFragment extends Fragment {
         progressDialog.setMessage("Reloading account info...");
         progressDialog.show();
 
+        for (Fragment f: getFragmentManager().getFragments()){
+            Log.d("ACCFRAG", f.toString());
+
+        }
+
         Ion.with(this.getActivity())
-                .load(apiUrl + "bets/" + customer.getUsername())
+                .load(apiUrl + "login"  )
                 .setBodyParameter("username", customer.getUsername())
                 .setBodyParameter("password", customer.getPassword())
                 .asString()
@@ -109,6 +115,7 @@ public class AccountFragment extends Fragment {
                                 String customerJson = json.getJSONObject("customer").toString();
                                 Gson gson = new Gson();
                                 customer = gson.fromJson(customerJson, Customer.class);
+                                ((MainActivity)getActivity()).setCustomer(customer);
                             } else {
                                 String error = json.getString("error");
                                 Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();

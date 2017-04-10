@@ -51,6 +51,25 @@ public class MainActivity extends AppCompatActivity {
         races = (ArrayList<Race>) this.getIntent().getExtras().getSerializable("races");
     }
 
+    @Override
+    public void recreate() {
+        setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        customer = (Customer) this.getIntent().getExtras().getSerializable("customer");
+        races = (ArrayList<Race>) this.getIntent().getExtras().getSerializable("races");
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new RaceFragment(), "Racing");
@@ -62,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     //create a pop up requesting user to confirm they wish to quit the app
     public void onBackPressed() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Dialog);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog);
         dialog.setTitle("Logout");
         dialog.setMessage("Are you sure you wish to exit the app and log out?");
 

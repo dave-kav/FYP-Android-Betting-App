@@ -1,6 +1,8 @@
 package cit.fyp.dk.betting_app.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,14 +28,19 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.LoadDeepZoom;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cit.fyp.dk.betting_app.R;
+import cit.fyp.dk.betting_app.activities.BetDetailActivity;
 import cit.fyp.dk.betting_app.activities.LoginActivity;
 import cit.fyp.dk.betting_app.activities.MainActivity;
 import cit.fyp.dk.betting_app.domain.Bet;
@@ -248,19 +255,20 @@ public class RaceFragment extends Fragment{
                             .setBodyParameter("username", customer.getUsername())
                             .setBodyParameter("stake", stake + "")
                             .setBodyParameter("eachway", checkBox.isChecked() ? "true" : "false")
+                            .setBodyParameter("horse", horseItems.getSelectedItem().toString())
                             .asString()
                             .setCallback(new FutureCallback<String>() {
                                 @Override
                                 public void onCompleted(Exception e, String result) {
                                     try {
                                         JSONObject json = new JSONObject(result);    // Converts the string "result" to a JSONObject
+                                        Log.d("racefrag", json.toString());
                                         String jsonResult = json.getString("result"); // Get the string "result" inside the Json-object
                                         if (jsonResult.equalsIgnoreCase("ok")){
-//                                            String customerJson = json.getJSONObject("customer").toString();
+                                            String betJson = json.getJSONObject("bet").toString();
                                             Gson gson = new Gson();
-//                                            customer = gson.fromJson(customerJson, Customer.class);
+                                            bet = gson.fromJson(betJson, Bet.class);
                                         } else {
-//                                            String error = json.getString("error");
                                             Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
                                         }
                                     } catch (JSONException j){
@@ -273,17 +281,42 @@ public class RaceFragment extends Fragment{
 
                     new android.os.Handler().postDelayed(new Runnable() {
                                                              public void run() {
-                                                                 // On complete call either onLoginSuccess or onLoginFailed
-                                                                 if (bet != null)
-                                                                     System.out.println(true);
+                                                                 if (bet != null) {
+                                                                     Toast.makeText(getContext(), "Bet Successfully Placed!", Toast.LENGTH_SHORT).show();
+                                                                     meetingItems.setSelection(0);
+                                                                     horseItems.setSelection(0);
+                                                                     meetingItems.setSelection(0);
+                                                                     raceItems.setSelection(0);
+                                                                     checkBox.setSelected(false);
+                                                                     stakeEt.setText("");
+                                                                     stake = 0;
+                                                                     raceItems .setVisibility(View.INVISIBLE);
+                                                                     horseItems.setVisibility(View.INVISIBLE);
+                                                                     betSection.setVisibility(View.INVISIBLE);
+                                                                     button.setVisibility(View.INVISIBLE);
+                                                                     progressDialog.dismiss();
+
+                                                                     Map wrapper = getHorseInRace(bet.getSelection());
+                                                                     bet.setRace((Race)wrapper.get("race"));
+                                                                     bet.setHorse((Horse)wrapper.get("horse"));
+
+                                                                     Context context = getContext();
+                                                                     Intent intent = new Intent(context, BetDetailActivity.class);
+                                                                     intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, bet.getBetID());
+                                                                     Bundle b = new Bundle();
+                                                                     Log.d("RACEFRAG", customer.getBets().size() + "");
+                                                                     customer.getBets().add(bet);
+                                                                     Log.d("RACEFRAG", customer.getBets().size() + "");
+                                                                     b.putSerializable("customer", customer);
+                                                                     intent.putExtras(b);
+
+                                                                     context.startActivity(intent);
+                                                                 }
                                                                  else
                                                                      System.out.println(false);
-                                                                 progressDialog.dismiss();
                                                              }
                                                          }, 3000
                     );
-
-                    //redirect to bet details activity
                 }
             }
         });
@@ -321,6 +354,19 @@ public class RaceFragment extends Fragment{
                 racesArray.add(r.getTime());
             }
         }
+    }
+
+    private Map<String, Object> getHorseInRace(String selectionID) {
+        HashMap<String, Object> wrapper = new HashMap<>();
+        for (Race r: races) {
+            for (Horse h: r.getAllHorses()) {
+                if (h.getSelectionID() == Integer.parseInt(selectionID)) {
+                    wrapper.put("horse", h);
+                    wrapper.put("race", r);
+                }
+            }
+        }
+        return wrapper;
     }
 
     private void getHorsesByRace(String time) {
