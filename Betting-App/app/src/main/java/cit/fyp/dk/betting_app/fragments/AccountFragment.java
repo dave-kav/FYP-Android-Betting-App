@@ -60,7 +60,7 @@ public class AccountFragment extends Fragment {
         dobTV.setText(customer.getDOB().toString());
 
         TextView balanceTV = (TextView) view.findViewById(R.id.account_balance);
-        balanceTV.setText("\u20ac" + customer.getCredit());
+        balanceTV.setText(String.format("\u20ac%.2f", customer.getCredit()));
 
         TextView totalBetsTV = (TextView) view.findViewById(R.id.total_bets);
         totalBetsTV.setText(customer.getBets().size() + "");
