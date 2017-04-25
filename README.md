@@ -1,4 +1,4 @@
-# Mobile Management Application #
+# Mobile Betting Application #
 
 Android application
 
